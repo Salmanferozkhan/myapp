@@ -1,0 +1,229 @@
+﻿<script>
+    var uri = '/Department/GetAllDepartments';
+    $(document).ready(function () {
+        console.log(uri);
+        $.getJSON(uri)
+        .done(function (data) {
+            $.each(data, function (key, item) {
+                //$('#EmpID').append("<tr><td>" + item.Eid + "</td>" + "<td>" + item.EName + "</td>" + "<td>" + item.ESalary + "</td>" + "<td>" + item.EGender + "</td>" + "</tr>");
+
+                $('#DeptDropdown').append(
+
+             $('<option></option>').val(item.Did).html(item.DName));
+            });
+        });
+
+    });
+    $(function () {
+        $("#DeptDropdown").change(function () {
+            var selectedItem = $(this).val();
+            var ddlStates = $("#EmployeeID");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: "/Employees/GetEmpByDid/",
+                data: { "Did": selectedItem },
+                success: function (data) {
+                    ddlStates.html('');
+                    $.each(data, function (id, option) {
+                        ddlStates.append($('<option></option>').val(option.Eid).html(option.EName));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        });
+    });
+    function GetAllEmployees() {
+        $.ajax({
+            type: "POST",
+            url: "Employees/GetAllEmployees",
+            contentType: "application/json;charset=utf-8",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                $("#GetEmps").empty();
+                if (data.length > 0) {
+                    $("#GetEmps").append("<tr class='danger'><th></th><th>Employee ID</th> <th>Employee Name</th><th> Employee Salary</th><th>Employee Gender</th><th>Did</th></tr>");
+                    for (var i = 0; i < data.length; i++) {
+                        $("#GetEmps").append("<tr id='" + i + "'><td>" +
+                            "<input type='button' class='btn btn-sm btn-danger' onclick='getEmp(" + i + ")' value='Edit' /> </td> <td>" +
+                            data[i].Eid + "</td> <td>" +
+                        data[i].EName + "</td> <td>" +
+
+                        data[i].ESalary + "</td> <td>" +
+
+                        data[i].EGender + "</td> <td>" +
+
+                        data[i].Did + "</td></tr>");
+
+                    }
+                   
+                }
+                
+
+            },
+
+            error: function (result) {
+                alert('Error');
+
+            }
+           
+        });
+    }
+    $(document).ready(function () {
+        GetAllEmployees();
+    });
+    function setForm(customerId) {
+        if (customerId[4] == 'Male') {
+            console.log(customerId[4])
+            $("#male").prop('checked', true);
+        }
+        else if (customerId[4] == 'Female') {
+            console.log(customerId[4])
+            $("#female").prop('checked', true);
+        }
+        alert(customerId[2]);
+        //$("#EmpID").val(customerId[1]);
+        var input = $('#EmpID');
+        input.val(customerId[1]);
+        input.trigger('input');
+       
+        $("#EmpName").val(customerId[2]);
+        $("#EmpSal").val(customerId[3]);
+        $("#Did").val(customerId[5]);
+    }
+    function getEmp(trValue) {
+
+        //$('#'+trValue).each(function () {
+        //    var customerId = $(this).find("td").html();
+        //    alert(customerId);
+        //});
+        //$('#' + trValue).find('td').each(function () {
+        // set no of column here
+        //var colCount = 6;
+        var customerId = new Array(6);
+        for (var i = 1; i < 7; i++) {
+            customerId[i] = $('#' + trValue).find("td").eq(i).html();
+           
+        }
+        setForm(customerId);
+        //});
+        //alert(trValue);
+    }
+</script>
+<br /><br />
+<div class="well">
+    <div class='form-group'>
+        <label class='col-sm-4 control-label'>Select Employee</label>
+        <div class='col-sm-3'>
+            
+            <select class="form-control" id="DeptDropdown"></select>
+        </div>
+        <div class='col-sm-3'>
+            <select class="form-control" id="EmployeeID"></select>
+        </div>
+        <br />
+    </div>
+
+</div>
+<br />
+<div class="well" ng-controller="EmployeeController">
+    <center><h3>Employee List</h3></center>
+
+    <table id="GetEmps" class="table table-condensed table-bordered table-hover" width="100%">
+        @*<tr class="danger">
+                <th>Employee ID</th>
+                <th>Employee Name</th>
+                <th>Salary</th>
+                <th>Did</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="x in Emps">
+                <td><a ng-click="getByEid(x.Eid)" href="#/Employees">{{x.Eid}}</a></td>
+                <td>{{x.EName}}</td>
+                <td>{{x.ESalary}}</td>
+                <td>{{x.Did }}</td>
+                <td><a href="#/Employees" ng-click="delEmpById(x.Eid)"><img src="~/pic/DeleteRed.png"></a></td>
+            </tr>*@
+    </table>
+    <br />
+    @*<div class="jumbotron">*@
+    @*@{Html.RenderPartial("pv_Details");}*@
+    <form name="myform" novalidate>
+        <table class="table table-hover table-bordered" style="width:80%;">
+            <tr>
+                <td colspan="2">
+                    {{Msg}}
+                    <ul class="text-danger" style="font-weight:bold;">
+
+                        <li ng-if="myform.$submitted && myform.EName.$invalid">EName is required</li>
+                        <li ng-if="myform.$submitted && myform.EGender.$error.required">Egender is required</li>
+                        <li ng-if="myform.$submitted && myform.DateOfJoining.$error.required">EDOJ is required</li>
+                    </ul>
+                    <ul ng-repeat="r in errorMsgs">
+                        <li>{{r}}</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Employee ID:</td>
+                <td>
+                    <div class="col-md-5">
+                        <input type="text" id="EmpID" class="form-control has-error" ng-disabled="true" ng-model="Empp.Eid" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Employee Name:</td>
+                <td>
+                    <div class="col-md-5">
+                        <input type="text" id="EmpName" class="form-control" name="EName" ng-model="Empp.EName" required />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Employee Salary:</td>
+                <td>
+                    <div class="col-md-5">
+                        <input type="number" id="EmpSal" class="form-control" name="ESalary" ng-model="Empp.ESalary" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Employee Gender:</td>
+                <td>
+                    <input type="radio" id="male" value="Male" name="EGender" ng-model="Empp.EGender" required /> Male
+                    <input type="radio" id="female" value="Female" name="EGender" ng-model="Empp.EGender" required /> Female
+                </td>
+            </tr>
+            <tr>
+                <td>Date OF Joining:</td>
+                <td>
+                    <div class="col-md-5">
+                        <input type="date" id="DOJ" class="form-control" value="" name="DateOfJoining" ng-model="Empp.DateOfJoining" required />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Did:</td>
+                <td>
+                    <div class="col-md-5">
+                        <input type="text" id="Did" class="form-control" value="" name="Did" ng-model="Empp.Did" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="submit" class="btn btn-danger" ng-click="Create(Empp,myform.$valid)" value="Create" /></td>
+                <td><input type="submit" class="btn btn-info" ng-click="UpdateEmployee(Empp,myform.$valid)" onclick="GetAllEmployees()" value="Update" /></td>
+            </tr>
+
+            @*<tr>
+                    <td colspan="2">{{Msg}}</td>
+                </tr>*@
+        </table>
+    </form>
+
+</div>
+@*</div>*@

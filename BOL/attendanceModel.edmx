@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EmployeeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbl_Attandence">
+          <Key>
+            <PropertyRef Name="AID" />
+          </Key>
+          <Property Name="AID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Eid" Type="int" />
+          <Property Name="IN" Type="datetime" />
+          <Property Name="OUT" Type="datetime" />
+          <Property Name="DelStatus" Type="bit" />
+          <Property Name="UserID" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_Department">
+          <Key>
+            <PropertyRef Name="Did" />
+          </Key>
+          <Property Name="Did" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tbl_Employee">
+          <Key>
+            <PropertyRef Name="Eid" />
+          </Key>
+          <Property Name="Eid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EName" Type="varchar" MaxLength="50" />
+          <Property Name="EGender" Type="varchar" MaxLength="10" />
+          <Property Name="ESalary" Type="money" />
+          <Property Name="DateOfJoining" Type="date" />
+          <Property Name="Did" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
+          <Property Name="Role" Type="varchar" MaxLength="1" />
+        </EntityType>
+        <Association Name="FK_tbl_Attandence_tbl_Employee">
+          <End Role="tbl_Employee" Type="Self.tbl_Employee" Multiplicity="0..1" />
+          <End Role="tbl_Attandence" Type="Self.tbl_Attandence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="tbl_Attandence">
+              <PropertyRef Name="Eid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_Attandence_tbl_User">
+          <End Role="tbl_User" Type="Self.tbl_User" Multiplicity="0..1" />
+          <End Role="tbl_Attandence" Type="Self.tbl_Attandence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="tbl_Attandence">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_Employee_tbl_Department">
+          <End Role="tbl_Department" Type="Self.tbl_Department" Multiplicity="0..1" />
+          <End Role="tbl_Employee" Type="Self.tbl_Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Department">
+              <PropertyRef Name="Did" />
+            </Principal>
+            <Dependent Role="tbl_Employee">
+              <PropertyRef Name="Did" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmployeeModelStoreContainer">
+          <EntitySet Name="tbl_Attandence" EntityType="Self.tbl_Attandence" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Department" EntityType="Self.tbl_Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Employee" EntityType="Self.tbl_Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_User" EntityType="Self.tbl_User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tbl_Attandence_tbl_Employee" Association="Self.FK_tbl_Attandence_tbl_Employee">
+            <End Role="tbl_Employee" EntitySet="tbl_Employee" />
+            <End Role="tbl_Attandence" EntitySet="tbl_Attandence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Attandence_tbl_User" Association="Self.FK_tbl_Attandence_tbl_User">
+            <End Role="tbl_User" EntitySet="tbl_User" />
+            <End Role="tbl_Attandence" EntitySet="tbl_Attandence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Employee_tbl_Department" Association="Self.FK_tbl_Employee_tbl_Department">
+            <End Role="tbl_Department" EntitySet="tbl_Department" />
+            <End Role="tbl_Employee" EntitySet="tbl_Employee" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EmployeeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbl_Attandence">
+          <Key>
+            <PropertyRef Name="AID" />
+          </Key>
+          <Property Name="AID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Eid" Type="Int32" />
+          <Property Name="IN" Type="DateTime" Precision="3" />
+          <Property Name="OUT" Type="DateTime" Precision="3" />
+          <Property Name="DelStatus" Type="Boolean" />
+          <Property Name="UserID" Type="Int32" />
+          <NavigationProperty Name="tbl_Employee" Relationship="Self.FK_tbl_Attandence_tbl_Employee" FromRole="tbl_Attandence" ToRole="tbl_Employee" />
+          <NavigationProperty Name="tbl_User" Relationship="Self.FK_tbl_Attandence_tbl_User" FromRole="tbl_Attandence" ToRole="tbl_User" />
+        </EntityType>
+        <EntityType Name="tbl_Department">
+          <Key>
+            <PropertyRef Name="Did" />
+          </Key>
+          <Property Name="Did" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tbl_Employee" Relationship="Self.FK_tbl_Employee_tbl_Department" FromRole="tbl_Department" ToRole="tbl_Employee" />
+        </EntityType>
+        <EntityType Name="tbl_Employee">
+          <Key>
+            <PropertyRef Name="Eid" />
+          </Key>
+          <Property Name="Eid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" ConcurrencyMode="Fixed" />
+          <Property Name="ESalary" Type="Decimal" Precision="19" Scale="4" ConcurrencyMode="Fixed" />
+          <Property Name="Did" Type="Int32" ConcurrencyMode="Fixed" />
+          <NavigationProperty Name="tbl_Attandence" Relationship="Self.FK_tbl_Attandence_tbl_Employee" FromRole="tbl_Employee" ToRole="tbl_Attandence" />
+          <NavigationProperty Name="tbl_Department" Relationship="Self.FK_tbl_Employee_tbl_Department" FromRole="tbl_Employee" ToRole="tbl_Department" />
+          <Property Name="EGender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" ConcurrencyMode="Fixed" />
+          <Property Name="DateOfJoining" Type="DateTime" Precision="0" ConcurrencyMode="Fixed" />
+        </EntityType>
+        <EntityType Name="tbl_User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Role" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tbl_Attandence" Relationship="Self.FK_tbl_Attandence_tbl_User" FromRole="tbl_User" ToRole="tbl_Attandence" />
+        </EntityType>
+        <Association Name="FK_tbl_Attandence_tbl_Employee">
+          <End Role="tbl_Employee" Type="Self.tbl_Employee" Multiplicity="0..1" />
+          <End Role="tbl_Attandence" Type="Self.tbl_Attandence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Employee">
+              <PropertyRef Name="Eid" />
+            </Principal>
+            <Dependent Role="tbl_Attandence">
+              <PropertyRef Name="Eid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_Attandence_tbl_User">
+          <End Role="tbl_User" Type="Self.tbl_User" Multiplicity="0..1" />
+          <End Role="tbl_Attandence" Type="Self.tbl_Attandence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="tbl_Attandence">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_Employee_tbl_Department">
+          <End Role="tbl_Department" Type="Self.tbl_Department" Multiplicity="0..1" />
+          <End Role="tbl_Employee" Type="Self.tbl_Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Department">
+              <PropertyRef Name="Did" />
+            </Principal>
+            <Dependent Role="tbl_Employee">
+              <PropertyRef Name="Did" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmployeeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_Attandence" EntityType="Self.tbl_Attandence" />
+          <EntitySet Name="tbl_Department" EntityType="Self.tbl_Department" />
+          <EntitySet Name="tbl_Employee" EntityType="Self.tbl_Employee" />
+          <EntitySet Name="tbl_User" EntityType="Self.tbl_User" />
+          <AssociationSet Name="FK_tbl_Attandence_tbl_Employee" Association="Self.FK_tbl_Attandence_tbl_Employee">
+            <End Role="tbl_Employee" EntitySet="tbl_Employee" />
+            <End Role="tbl_Attandence" EntitySet="tbl_Attandence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Attandence_tbl_User" Association="Self.FK_tbl_Attandence_tbl_User">
+            <End Role="tbl_User" EntitySet="tbl_User" />
+            <End Role="tbl_Attandence" EntitySet="tbl_Attandence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Employee_tbl_Department" Association="Self.FK_tbl_Employee_tbl_Department">
+            <End Role="tbl_Department" EntitySet="tbl_Department" />
+            <End Role="tbl_Employee" EntitySet="tbl_Employee" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EmployeeModelStoreContainer" CdmEntityContainer="EmployeeEntities">
+          <EntitySetMapping Name="tbl_Attandence">
+            <EntityTypeMapping TypeName="EmployeeModel.tbl_Attandence">
+              <MappingFragment StoreEntitySet="tbl_Attandence">
+                <ScalarProperty Name="AID" ColumnName="AID" />
+                <ScalarProperty Name="Eid" ColumnName="Eid" />
+                <ScalarProperty Name="IN" ColumnName="IN" />
+                <ScalarProperty Name="OUT" ColumnName="OUT" />
+                <ScalarProperty Name="DelStatus" ColumnName="DelStatus" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Department">
+            <EntityTypeMapping TypeName="EmployeeModel.tbl_Department">
+              <MappingFragment StoreEntitySet="tbl_Department">
+                <ScalarProperty Name="Did" ColumnName="Did" />
+                <ScalarProperty Name="DName" ColumnName="DName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Employee">
+            <EntityTypeMapping TypeName="EmployeeModel.tbl_Employee">
+              <MappingFragment StoreEntitySet="tbl_Employee">
+                <ScalarProperty Name="DateOfJoining" ColumnName="DateOfJoining" />
+                <ScalarProperty Name="EGender" ColumnName="EGender" />
+                <ScalarProperty Name="Eid" ColumnName="Eid" />
+                <ScalarProperty Name="EName" ColumnName="EName" />
+                <ScalarProperty Name="ESalary" ColumnName="ESalary" />
+                <ScalarProperty Name="Did" ColumnName="Did" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_User">
+            <EntityTypeMapping TypeName="EmployeeModel.tbl_User">
+              <MappingFragment StoreEntitySet="tbl_User">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

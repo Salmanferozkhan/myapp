@@ -1,0 +1,44 @@
+﻿<table ng-show="EditEmp" class="table table-bordered table-hover" width="40%">
+    
+    <tr>
+        <td>EName:</td>
+        <td>
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-model="Emp.EName" />
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>Employee IN:</td>
+        <td>
+
+            <div class='col-sm-4'>
+                <span class="label label-primary">Clock IN</span><br />
+                @*<uib-timepicker ng-model="Emp.IN" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></uib-timepicker>*@
+                <input type="time" class="form-control" ng-model="Emp.IN" />
+            </div>
+            
+            @*<button type="button" class="btn btn-info" ng-click="toggleMode()">12H / 24H</button>*@
+
+        </td>
+    </tr>
+    <tr>
+        <td>Employee OUT:</td>
+        <td>
+            <div class='col-sm-4'>
+                <span class="label label-primary">Clock OUT</span><br />
+                @*<uib-timepicker ng-model="Emp.OUT" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></uib-timepicker>*@
+                <input type="time" class="form-control" ng-model="Emp.OUT" />
+            </div>
+        </td>
+    </tr>
+
+
+
+    <tr>
+        <td colspan="2"><input type="button" class="btn btn-warning" ng-click="ShowHideCencel()" value="Cencel" /></td>
+        <td><input type="button" class="btn btn-danger" ng-click="UpdateAttandence(Emp)" value="Update" /></td>
+    </tr>
+    
+</table>
+

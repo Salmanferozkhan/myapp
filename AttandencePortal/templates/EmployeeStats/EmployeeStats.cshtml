@@ -1,0 +1,31 @@
+﻿
+
+<br /><br />
+<div class="well" ng-controller="EmpStatsController">
+    <center>
+        <h3>Employee Attendance Monthly</h3>
+        <input type="date" ng-model="stats" />
+        <input type="button" value="GetStatsByMonth" class="btn btn-default" ng-click="getEmployeesbyMonth(stats)" />
+        <input type="button" value="GetStatsByYear" class="btn btn-default" ng-click="getEmployeesbyYear(stats)" />
+    </center>
+    <table class="table table-condensed table-striped table-bordered table-hover" width="100%">
+        <tr class="danger">
+            <th>Employee ID</th>
+            <th>Employee Name</th>
+            <th>Salary</th>
+            <th>StandardHours</th>
+            <th>Employee Hours</th>
+            <th>Employee Holidays</th>
+        </tr>
+        <tr ng-repeat="x in EmpStats">
+
+            <td>{{x.Eid}}</td>
+            <td>{{x.EName}}</td>
+            <td>{{x.ESalary}}</td>
+            <td>{{x.StandartHours }}</td>
+            <td>{{x.EmployeWorked}}</td>
+            <td>{{x.EmployeeHolidays}}</td>
+
+        </tr>
+    </table>
+</div>

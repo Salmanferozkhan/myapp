@@ -1,0 +1,227 @@
+﻿@using System.Web.WebPages;
+@*<script>
+    var uri = 'http://localhost:18004/Home/GetDept';
+    $(document).ready(function () {
+        console.log(uri);
+        $.getJSON(uri)
+        .done(function (data) {
+            $.each(data, function (key, item) {
+                //$('#EmpID').append("<tr><td>" + item.Eid + "</td>" + "<td>" + item.EName + "</td>" + "<td>" + item.ESalary + "</td>" + "<td>" + item.EGender + "</td>" + "</tr>");
+
+                $('#DeptDropdown').append(
+
+             $('<option></option>').val(item.Did).html(item.DName));
+            });
+        });
+
+    });
+    $(function () {
+        $("#DeptDropdown").change(function () {
+            var selectedItem = $(this).val();
+            var ddlStates = $("#EmployeeID");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: "/Home/GetEmpByDid/",
+                data: { "Did": selectedItem },
+            success: function (data) {                       
+                ddlStates.html('');
+                $.each(data, function (id, option) {
+                    ddlStates.append($('<option></option>').val(option.Eid).html(option.EName));
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve states.');
+            }
+        });
+    });
+    });
+</script>*@
+<div class="col-md-12">
+
+    <h1>Employee Attendance App</h1>
+
+    <div class='well' ng-show="ShowAllEmp">
+        <form name='form' class='form-horizontal' role='form'>
+            @*<div class='form-group'>
+                    <label class='col-sm-3 control-label'>Timepicker</label>
+                    <div class='col-sm-9'>
+                        <timepicker ng-model="time1" show-meridian='showMeridian' />
+                    </div>
+                </div>*@
+
+
+
+
+            <div class='form-group'>
+                <label class='col-sm-4 control-label'>Select Employee</label>
+                <div class='col-sm-3'>
+                    @*<select class="form-control" id="DeptDropdown"></select>
+                    <br />
+                    <select class="form-control" id="EmployeeID"</select>*@
+                    <select class="form-control" ng-model="e" ng-change="Show()"
+                        ng-options="E.Eid as E.EName for E in Emp " id="select"></select>
+                </div>
+            </div>
+            <div ng-show="showMe">
+                <div class="col-md-1"></div><br /><br /><br />
+                <div class='form-group'>
+                    <div class="col-md-1"></div>
+                    @*<div class='col-sm-3'>
+                            <span class="label label-primary">Clock IN</span><br />
+                            <timepicker-pop input-time="time2" class="input-group" disabled="disabled"
+                                            show-meridian='showMeridian'></timepicker-pop>
+                        </div>
+                        <div ng-show="out" class='col-sm-3'>
+                            <span class="label label-primary">Clock OUT</span><br />
+                            <timepicker-pop input-time="time1" class="input-group" disabled="disabled"
+                                            show-meridian='showMeridian'></timepicker-pop>
+                        </div>
+                        {{e}}*@
+                    <div class='col-sm-3'>
+                        <span class="label label-primary">Clock IN</span><br />
+                        <input type="text" class="form-control" ng-model="mytime" />
+                    </div>
+                    <div class="col-sm-1">
+                        <br />
+                        <button type="button" class="btn btn-default" ng-click="open()"><i class="fa fa-clock-o"></i></button>
+                        <button type="button" ng-click="EmployeeIN(mytime,e)" class="btn btn-danger">
+                            IN
+                        </button>
+                    </div>
+                    <div class='col-sm-3'>
+                        <span class="label label-primary">Clock OUT</span><br />
+                        <input type="text" class="form-control" ng-model="mytime2" />
+                    </div>
+                    <div class="col-sm-1">
+                        <br />
+                        <button type="button" class="btn btn-default" ng-click="open2()"><i class="fa fa-clock-o"></i></button>
+                        <button type="button" ng-click="EmployeeOUT(mytime2,e)" class="btn btn-danger">
+                            OUT
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+
+    </div>
+    <div class="jumbotron">
+        @*@{Html.RenderPartial("GetEmpToday");}*@
+
+
+        <table class="table table-striped table-bordered table-hover">
+            <tr class="danger">
+                <th>
+                    Eid
+                </th>
+                <th>
+                    Employee Name
+                </th>
+                <th>
+                    Employee IN
+                </th>
+                <th>
+                    Employee OUT
+                </th>
+
+                <th></th>
+            </tr>
+            <tr ng-repeat="x in EmpToday">
+                <td><a ng-click="getByAid(x.AID)" href="#">{{x.Eid}}</a></td>
+                <td>{{x.EName}}</td>
+                <td>{{x.IN | jsonDate :'medium' }}</td>
+                <td>{{x.OUT | jsonDate :'medium' }}</td>
+                
+                <td><a href="#" ng-click="delEmpbyID(x.AID)"><img src="~/pic/DeleteRed.png"></a></td>
+            </tr>
+            @*<td>
+                    @Html.ActionLink("Edit", "Edit", new { id=item.AID }) |
+                    @Html.ActionLink("Details", "Details", new { id=item.AID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.AID })
+                </td>*@
+
+
+        </table>
+        {{sampleJsonDate}}
+
+
+        <br />
+        @*@{Html.RenderPartial("pv_EditEmp");}*@
+        <table ng-show="EditEmp" class="table table-bordered table-hover" width="40%">
+
+            <tr>
+                <td>EName:</td>
+                <td>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" ng-model="Emp.EName" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Employee IN:</td>
+                <td>
+
+                    <div class='col-sm-4'>
+                        <span class="label label-primary">Clock IN</span><br />
+                        @*<uib-timepicker ng-model="Emp.IN" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></uib-timepicker>*@
+                        <input type="time" class="form-control" ng-model="Emp.IN" />
+                    </div>
+
+                    @*<button type="button" class="btn btn-info" ng-click="toggleMode()">12H / 24H</button>*@
+
+                </td>
+            </tr>
+            <tr>
+                <td>Employee OUT:</td>
+                <td>
+                    <div class='col-sm-4'>
+                        <span class="label label-primary">Clock OUT</span><br />
+                        @*<uib-timepicker ng-model="Emp.OUT" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></uib-timepicker>*@
+                        <input type="time" class="form-control" ng-model="Emp.OUT" />
+                    </div>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td colspan="2"><input type="button" class="btn btn-warning" ng-click="ShowHideCencel()" value="Cencel" /></td>
+                <td><input type="button" class="btn btn-danger" ng-click="UpdateAttandence(Emp)" value="Update" /></td>
+            </tr>
+
+        </table>
+
+
+    </div>
+</div>
+<div class="col-md-2"></div>
+<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Employee IN</h3>
+    </div>
+    <div class="modal-body">
+        <uib-timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></uib-timepicker>
+        @*<button type="button" class="btn btn-info" ng-click="toggleMode()">12H / 24H</button>*@
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="myModel2.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Employee OUT</h3>
+    </div>
+    <div class="modal-body">
+        <uib-timepicker ng-model="mytime2" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></uib-timepicker>
+        @*<button type="button" class="btn btn-info" ng-click="toggleMode()">12H / 24H</button>*@
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok2()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+

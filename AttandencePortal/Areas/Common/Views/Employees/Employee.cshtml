@@ -1,0 +1,97 @@
+﻿
+    <center><h3>Employee List</h3></center>
+    <div class="jumbotron">
+
+        <table class="table-condensed table-hover" width="100%">
+
+            <tr class="info">
+                <th>Eid</th>
+                <th>Employee Name</th>
+                <th>Salary</th>
+                <th>Did</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="x in Emps">
+                <td><a ng-click="getByEid(x.Eid)" href="#">{{x.Eid}}</a></td>
+                <td>{{x.EName}}</td>
+                <td>{{x.ESalary}}</td>
+                <td>{{x.Did }}</td>
+
+                <td><a href="#" ng-click="delEmpById(x.Eid)"><img src="~/pic/DeleteRed.png"></a></td>
+            </tr>
+        </table>
+    </div>
+    <div class="well">
+        @*@{Html.RenderPartial("pv_Details");}*@
+        <form name="myform" novalidate>
+            <table class="table table-hover table-bordered" style="width:80%;">
+
+                <tr>
+                    <td>Eid:</td>
+                    <td>
+                        <div class="col-md-5">
+                            <input type="text" class="form-control" ng-disabled="true" ng-model="Emp.Eid" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>EName:</td>
+                    <td>
+                        <div class="col-md-5">
+                            <input type="text" class="form-control" ng-model="Emp.EName" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>ESalary:</td>
+                    <td>
+                        <div class="col-md-5">
+                            <input type="number" class="form-control" ng-model="Emp.ESalary" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>EGender:</td>
+                    <td>
+                        <input type="radio" value="Male" ng-model="Emp.EGender" /> Male
+                        <input type="radio" value="Female" ng-model="Emp.EGender" /> Female
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date OF Joining:</td>
+                    <td>
+                        <div class="col-md-5">
+                            <input type="date" class="form-control" value="" ng-model="Emp.DateOfJoining" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Did:</td>
+                    <td>
+                        <div class="col-md-5">
+                            <input type="text" class="form-control" value="" ng-model="Emp.Did" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="button" class="btn btn-danger" ng-click="Create(Emp,myform.$valid)" value="Create" /></td>
+                    <td><input type="button" class="btn btn-info" ng-click="UpdateEmployee(Emp)" value="Update" /></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        {{Msg}}
+                        <ul>
+                            <li ng-if="myform.$submitted && myform.Eid.$invalid">Eid is required</li>
+                            <li ng-if="myform.$submitted && myform.EName.$invalid">EName is required</li>
+                            <li ng-if="myform.$submitted && myform.EGender.$error.required">Egender is required</li>
+                            <li ng-if="myform.$submitted && myform.DateOfJoining.$error.required">EDOB is required</li>
+                        </ul>
+                        <ul ng-repeat="r in errorMsgs">
+                            <li>{{r}}</li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

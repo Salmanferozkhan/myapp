@@ -1,0 +1,102 @@
+﻿<div class="col-md-12">
+
+    <h1>Employee Attendance App</h1>
+
+    <div class='well' ng-show="ShowAllEmp">
+        <form name='form' class='form-horizontal' role='form'>
+            @*<div class='form-group'>
+                    <label class='col-sm-3 control-label'>Timepicker</label>
+                    <div class='col-sm-9'>
+                        <timepicker ng-model="time1" show-meridian='showMeridian' />
+                    </div>
+                </div>*@
+
+
+
+
+            <div class='form-group'>
+                <label class='col-sm-4 control-label'>Select Employee</label>
+                <div class='col-sm-3'>
+                    <select class="form-control" ng-model="e" ng-change="Show()"
+                            ng-options="E.Eid as E.EName for E in Emp " id="select"></select>
+                </div>
+            </div>
+            <div ng-show="showMe">
+                <div class="col-md-1"></div><br /><br /><br />
+                <div class='form-group'>
+                    <div class="col-md-1"></div>
+                    @*<div class='col-sm-3'>
+                            <span class="label label-primary">Clock IN</span><br />
+                            <timepicker-pop input-time="time2" class="input-group" disabled="disabled"
+                                            show-meridian='showMeridian'></timepicker-pop>
+                        </div>
+                        <div ng-show="out" class='col-sm-3'>
+                            <span class="label label-primary">Clock OUT</span><br />
+                            <timepicker-pop input-time="time1" class="input-group" disabled="disabled"
+                                            show-meridian='showMeridian'></timepicker-pop>
+                        </div>
+                        {{e}}*@
+                    <div class='col-sm-3'>
+                        <span class="label label-primary">Clock IN</span><br />
+                        <input type="text" class="form-control" ng-model="mytime" />
+                    </div>
+                    <div class="col-sm-1">
+                        <br />
+                        <button type="button" class="btn btn-default" ng-click="open()"><i class="fa fa-clock-o"></i></button>
+                        <button type="button" ng-click="EmployeeIN(mytime,e)" class="btn btn-danger">
+                            IN
+                        </button>
+                    </div>
+                    <div class='col-sm-3'>
+                        <span class="label label-primary">Clock OUT</span><br />
+                        <input type="text" class="form-control" ng-model="mytime2" />
+                    </div>
+                    <div class="col-sm-1">
+                        <br />
+                        <button type="button" class="btn btn-default" ng-click="open2()"><i class="fa fa-clock-o"></i></button>
+                        <button type="button" ng-click="EmployeeOUT(mytime2,e)" class="btn btn-danger">
+                            OUT
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+
+    </div>
+    <div class="jumbotron">
+        @{Html.RenderPartial("GetEmpToday");}
+        <br />
+        @{Html.RenderPartial("pv_EditEmp");}
+    </div>
+</div>
+<div class="col-md-2"></div>
+<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Employee IN</h3>
+    </div>
+    <div class="modal-body">
+        <uib-timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></uib-timepicker>
+        @*<button type="button" class="btn btn-info" ng-click="toggleMode()">12H / 24H</button>*@
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="myModel2.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Employee OUT</h3>
+    </div>
+    <div class="modal-body">
+        <uib-timepicker ng-model="mytime2" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></uib-timepicker>
+        @*<button type="button" class="btn btn-info" ng-click="toggleMode()">12H / 24H</button>*@
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok2()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+

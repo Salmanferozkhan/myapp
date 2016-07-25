@@ -1,0 +1,58 @@
+﻿@model IEnumerable<BOL.tbl_Attandence>
+
+@{
+    ViewBag.Title = "Index";
+   
+}
+
+<h2>Attandence</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IN)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OUT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DelStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tbl_Employee.EName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tbl_User.UserName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.IN)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OUT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DelStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tbl_Employee.EName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tbl_User.UserName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.AID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.AID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.AID })
+        </td>
+    </tr>
+}
+
+</table>
